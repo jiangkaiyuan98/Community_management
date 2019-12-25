@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.ActivateMapperCustom" >
+  <!--定义了社团成员列表查询的sql片段-->
+  <sql id="findActivateList_where">
+        activate.comId=#{id}
+  </sql>
+  <!-- 商品列表查询 -->
+  <!-- parameterType传入包装对象(包装了查询条件) -->
+  <select id="findActivateList" parameterType="java.lang.Integer"
+          resultType="cn.itcast.ssm.po.ActivateCustom">
+        SELECT activate.* FROM activate
+    <where>
+      <include refid="findActivateList_where"></include>
+    </where>
+  </select>
+</mapper>

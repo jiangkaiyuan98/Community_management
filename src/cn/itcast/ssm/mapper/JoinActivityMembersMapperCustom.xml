@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.JoinActivityMembersMapperCustom" >
+
+<select id="join_activateMembers_exist" parameterType="cn.itcast.ssm.po.JoinActivityMembers"
+        resultType="cn.itcast.ssm.po.JoinActivityMembers">
+      select * from join_activity_members
+    where stuId=${stuid} and activateId=${activateid}
+</select>
+    <select id="find_all_join_activityMembersList" parameterType="java.lang.Integer"
+            resultType="cn.itcast.ssm.po.JoinActivityMembersCustom">
+        select activateId,stuId,state,name,description from join_activity_members,student
+    where activateId=#{act_id} and stuId=student.id
+    </select>
+    <update id="updataBystuid_actid" parameterType="cn.itcast.ssm.po.JoinActivityMembers">
+        update join_activity_members set state=${state} where activateId=${activateid} and stuId=${stuid}
+    </update>
+</mapper>

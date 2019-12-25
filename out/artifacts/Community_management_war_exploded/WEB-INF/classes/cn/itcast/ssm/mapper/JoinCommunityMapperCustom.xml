@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.JoinCommunityMapperCustom" >
+<select id="community_members_exist" parameterType="cn.itcast.ssm.po.JoinCommunity" resultType="cn.itcast.ssm.po.JoinCommunity">
+    select * from join_community
+    where stuId=${stuid} and comId=${comid}
+</select>
+    <select id="findJoinCommunityList" parameterType="java.lang.Integer"
+            resultType="cn.itcast.ssm.po.JoinCommunityCustom">
+        select join_community.*,student.name,student.description from join_community,student
+        where comId=#{comid} and student.id=stuId
+    </select>
+    <update id="updateBycomid_stuid" parameterType="cn.itcast.ssm.po.JoinCommunity">
+        update join_community set state=${state} where comId=${comid} and stuId=${stuid}
+    </update>
+</mapper>

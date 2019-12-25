@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.ActivityMembersMapperCustom">
+<select id="join_act_num" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+SELECT count(activateId)
+from activity_members
+where stuId=#{arg0} and activateId in(select id from activate where comId=#{arg1})
+</select>
+    <select id="findActivityMembers" parameterType="java.lang.Integer"
+            resultType="cn.itcast.ssm.po.ActivityMembersCustom">
+        select activity_members.*,student.name,student.description
+        from activity_members,student
+        where activity_members.activateId=#{activateid} and activity_members.stuId=student.id
+    </select>
+</mapper>

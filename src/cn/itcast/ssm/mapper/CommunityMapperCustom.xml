@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.CommunityMapperCustom" >
+  <sql id="find_ican_join">
+<if test="id!=null and id!=''">
+  community.id not in (select comId from community_members where community_members.stuId=${id})
+</if>
+  </sql>
+  <!-- 社团列表查询 -->
+  <select id="findCommunityList" parameterType="cn.itcast.ssm.po.StudentCustom"
+          resultType="cn.itcast.ssm.po.CommunityCustom">
+    SELECT * FROM community
+    <where>
+      <include refid="find_ican_join"></include>
+    </where>
+  </select>
+  <!-- 定义加入的社团列表查询的sql片段 -->
+  <sql id="findMy_CommunityList_where">
+      <if test="id!=null and id!=''">
+         community_members.stuId=${id} and community_members.comId=community.id
+      </if>
+  </sql>
+  <!--定义了社团成员列表查询的sql片段-->
+  <sql id="findCommunityMembersList_where">
+        community_members.comId=#{id} and community_members.stuId=student.id
+  </sql>
+  <!-- 参加社团列表的查询 -->
+  <select id="findMy_CommunityList" parameterType="cn.itcast.ssm.po.StudentCustom"
+          resultType="cn.itcast.ssm.po.CommunityCustom">
+    SELECT community.* FROM community,community_members
+    <where>
+      <include refid="findMy_CommunityList_where"></include>
+    </where>
+  </select>
+  <!-- 加入社团成员的查询 -->
+  <select id="findCommunityMembersList" parameterType="java.lang.Integer"
+          resultType="cn.itcast.ssm.po.StudentCustom">
+    SELECT student.* FROM student,community_members
+    <where>
+      <include refid="findCommunityMembersList_where"></include>
+    </where>
+  </select>
+  <delete id="deleteCommunityMembers" parameterType="cn.itcast.ssm.po.CommunityMembers">
+    delete from community_members where comId=${comid} and stuId=${stuid}
+  </delete>
+  <select id="select_new_community" parameterType="cn.itcast.ssm.po.Community"
+          resultType="cn.itcast.ssm.po.Community">
+    select * from community where presidentId=${presidentid}
+  </select>
+</mapper>

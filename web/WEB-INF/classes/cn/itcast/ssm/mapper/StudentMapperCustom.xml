@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.StudentMapperCustom" >
+  <sql id="query_student_where">
+        student.username=${username} and student.password=${password}
+  </sql>
+
+  <select id="findStudentExist" parameterType="cn.itcast.ssm.po.StudentCustom"
+          resultType="cn.itcast.ssm.po.StudentCustom">
+    SELECT student.* FROM student
+    <where>
+      <include refid="query_student_where"></include>
+    </where>
+  </select>
+
+
+
+
+  <update id="backoutidentity" parameterType="java.lang.Integer">
+    update student set student.identity=2 where student.id in (select a.id from(select student.id from student,community where community.id=#{comid} and presidentId=student.id) a)
+  </update>
+</mapper>
